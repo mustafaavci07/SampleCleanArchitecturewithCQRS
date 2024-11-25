@@ -1,5 +1,6 @@
 using SampleCleanArchitecture.Application;
 using SampleCleanArchitecture.Infrastructure.Persistence;
+using SampleCleanArchitecture.Presentation.WebApi;
 
 using System;
 
@@ -19,8 +20,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterApplicationMethods(config);
 
-var app = builder.Build();
 
+var app = builder.Build();
+app.RegisterAPIs();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

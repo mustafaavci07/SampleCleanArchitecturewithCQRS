@@ -2,7 +2,7 @@
 
 namespace SampleCleanArchitecture.Application.Passengers.Queries.GetPassenger
 {
-    public record FindPassengerQuery (Ulid Id) :IRequest<PassengerDTO>
+    public record FindPassengerQuery(Ulid Id) :IRequest<PassengerDTO>
     {
     }
 
