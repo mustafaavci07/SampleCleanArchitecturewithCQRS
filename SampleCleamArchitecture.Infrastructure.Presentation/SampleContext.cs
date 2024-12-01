@@ -30,7 +30,7 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
             //modelBuilder.Entity<AuditableBaseEntity>().Property(p => p.Id).HasConversion<UlidTypeConverter>();
             modelBuilder.Entity<Passenger>().ToTable("Passenger");
             modelBuilder.Entity<Journey>().ToTable("Journey");
-            modelBuilder.Entity<Payment>().ToClassTable("Payment");
+            modelBuilder.Entity<Payment>().ToTable("Payment");
             modelBuilder.Entity<PassengerJourney>().ToTable("PassengerJourney");
             modelBuilder.ApplyConfiguration<PassengerJourney>(new PassengerJourneyConfigure());
             base.OnModelCreating(modelBuilder);
@@ -45,6 +45,11 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
                 .HaveMaxLength(26);
             configurationBuilder.ConfigureSmartEnum();
             base.ConfigureConventions(configurationBuilder);
+        }
+
+        public DbSet<TEntity> GetDBSet<TEntity>() where TEntity : AuditableBaseEntity
+        {
+            return Set<TEntity>();
         }
 
         /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

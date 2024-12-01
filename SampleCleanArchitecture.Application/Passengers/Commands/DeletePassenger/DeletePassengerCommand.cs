@@ -10,13 +10,11 @@ namespace SampleCleanArchitecture.Application.Passengers.Commands.DeletePassenge
         private SampleContext _context { get; set; } = context;
         public async Task<Ulid> Handle(DeletePassengerCommand request, CancellationToken cancellationToken)
         {
-            if (_context.Passengers.Find(request.id) is Passenger passenger)
-            {
-                passenger.IsDeleted = true;
-                await _context.SaveChangesAsync();
-                return passenger.Id;
-            }
-            return default(Ulid);
+            Passenger passenger = _context.Passengers.Find(request.id);
+            Guard.Against.NotFound(request.id,passenger);
+            passenger.IsDeleted = true;
+            await _context.SaveChangesAsync();
+            return passenger.Id;
         }
     }
 

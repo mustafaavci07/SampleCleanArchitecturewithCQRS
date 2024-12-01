@@ -13,13 +13,13 @@ namespace SampleCleanArchitecture.Application.Payments.Commands.UpdatePaymentSta
         private SampleContext _sampleContext { get; set; } = sampleContext;
         public async Task<Ulid> Handle(UpdatePaymentStateCommand request, CancellationToken cancellationToken)
         {
-            if (_sampleContext.Payment.Find(request.Id) is Payment passenger)
-            {
-                passenger.PaymentState = request.newState;
-                await _sampleContext.SaveChangesAsync();
-                return passenger.Id;
-            }
-            return default(Ulid);
+            Payment passenger = _sampleContext.Payment.Find(request.Id);
+            Guard.Against.NotFound(request.Id, passenger);
+          
+            passenger.PaymentState = request.newState;
+            await _sampleContext.SaveChangesAsync();
+            return passenger.Id;
+           
         }
       
     }

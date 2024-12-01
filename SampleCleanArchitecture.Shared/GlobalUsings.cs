@@ -2,4 +2,4 @@
 
 global using SampleCleanArchitecture.Shared.DTO.Journeys;
 global using SampleCleanArchitecture.Shared.DTO.Passengers;
-global using SampleCleanArchitecture.Shared.DTO.PassengerJourneys;
+global using SampleCleanArchitecture.Shared.DTO.Payments;

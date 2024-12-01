@@ -6,12 +6,12 @@ namespace SampleCleanArchitecture.Application.Passengers.Queries.GetPassenger
     {
     }
 
-    public class GetPagedPassengerQueryHandler(SampleContext sampleContext) : IRequestHandler<GetPagedPassengerQuery, PagedList<PassengerDTO>>
+    public class GetPagedPassengerQueryHandler(SampleContext sampleContext,IMapper mapper) : IRequestHandler<GetPagedPassengerQuery, PagedList<PassengerDTO>>
     {
         private SampleContext _sampleContext {  get; set; }=sampleContext;
         public async Task<PagedList<PassengerDTO>> Handle(GetPagedPassengerQuery request, CancellationToken cancellationToken)
         {
-            return await _sampleContext.Passengers.AsNoTracking().Select(p=>TinyMapper.Map<PassengerDTO>(p)).GetPagedResultListAsync<PassengerDTO>(request.PageOffset, request.PageSize);
+            return await _sampleContext.Passengers.AsNoTracking().Select(p=> mapper.Map<PassengerDTO>(p)).GetPagedResultListAsync<PassengerDTO>(request.PageOffset, request.PageSize);
 
         }
     }

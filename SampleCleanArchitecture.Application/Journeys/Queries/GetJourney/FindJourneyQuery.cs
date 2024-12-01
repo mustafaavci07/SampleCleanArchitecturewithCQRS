@@ -6,18 +6,14 @@ namespace SampleCleanArchitecture.Application.Journeys.Queries.GetJourney
     {
     }
 
-    public class FindJourneyQueryHandler(SampleContext context) : IRequestHandler<FindJourneyQuery, JourneyDTO>
+    public class FindJourneyQueryHandler(SampleContext context,IMapper mapper) : IRequestHandler<FindJourneyQuery, JourneyDTO>
     {
         SampleContext _sampleContext { get; set; } = context;
         public async Task<JourneyDTO> Handle(FindJourneyQuery request, CancellationToken cancellationToken)
         {
-
-            if (_sampleContext.Journeys.Find(request.Id) is Journey journey)
-            {
-                
-                return TinyMapper.Map<JourneyDTO>(journey);
-            }
-            return default(JourneyDTO);
+            Journey journeyRecord = _sampleContext.Journeys.Find(request.Id);
+            Guard.Against.NotFound(request.Id, journeyRecord);
+            return mapper.Map<JourneyDTO>(journeyRecord);
         }
     }
 

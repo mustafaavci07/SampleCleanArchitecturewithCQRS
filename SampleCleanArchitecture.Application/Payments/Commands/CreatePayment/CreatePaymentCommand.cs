@@ -1,5 +1,4 @@
 ﻿
-
 namespace SampleCleanArchitecture.Application.Payments.Commands.CreatePayment
 {
     public record CreatePaymentCommand(
@@ -11,12 +10,12 @@ namespace SampleCleanArchitecture.Application.Payments.Commands.CreatePayment
         DateTime PaymentDate)
         : IRequest<Ulid> { }
 
-    public class CreatePaymentCommandHandler(SampleContext sampleContext) : IRequestHandler<CreatePaymentCommand, Ulid>
+    public class CreatePaymentCommandHandler(SampleContext sampleContext,IMapper mapper) : IRequestHandler<CreatePaymentCommand, Ulid>
     {
         private SampleContext _sampleContext { get; set; } = sampleContext;
         public async Task<Ulid> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
         {
-            Payment entity = TinyMapper.Map<Payment>(request);
+            Payment entity = mapper.Map<Payment>(request);
             _sampleContext.Payment.Add(entity);
             await _sampleContext.SaveChangesAsync();
             return entity.Id;

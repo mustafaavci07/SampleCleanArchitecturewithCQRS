@@ -13,21 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{D72AB9CA-AA1D-4559-9E31-7B3D154B6537}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCleanArchitecutre.Core.Domain", "SampleCleanArchitecutre.Core.Domain\SampleCleanArchitecutre.Core.Domain.csproj", "{25F028AB-6631-4A53-A9D2-8EEC4C7FB18A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecutre.Core.Domain", "SampleCleanArchitecutre.Core.Domain\SampleCleanArchitecutre.Core.Domain.csproj", "{25F028AB-6631-4A53-A9D2-8EEC4C7FB18A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{9FE54383-E0D5-4361-A8A2-DEED9A784B22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCleanArchitecture.Shared", "SampleCleanArchitecture.Shared\SampleCleanArchitecture.Shared.csproj", "{6615DCCD-FE19-459C-980B-388921B60108}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecture.Shared", "SampleCleanArchitecture.Shared\SampleCleanArchitecture.Shared.csproj", "{6615DCCD-FE19-459C-980B-388921B60108}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCleanArchitecture.Infrastructure.Persistence", "SampleCleamArchitecture.Infrastructure.Presentation\SampleCleanArchitecture.Infrastructure.Persistence.csproj", "{C8FA92BD-D9AE-49E7-838C-41E724B0776C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecture.Infrastructure.Persistence", "SampleCleamArchitecture.Infrastructure.Presentation\SampleCleanArchitecture.Infrastructure.Persistence.csproj", "{C8FA92BD-D9AE-49E7-838C-41E724B0776C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCleanArchitecture.Presentation.WebApi", "SampleCleanArchitecture.Presentation.WebApi\SampleCleanArchitecture.Presentation.WebApi.csproj", "{F3244B70-F14E-4D1A-9DF7-C2293BDFC975}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecture.Presentation.WebApi", "SampleCleanArchitecture.Presentation.WebApi\SampleCleanArchitecture.Presentation.WebApi.csproj", "{F3244B70-F14E-4D1A-9DF7-C2293BDFC975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCleanArchitecture.Application", "SampleCleanArchitecture.Application\SampleCleanArchitecture.Application.csproj", "{7BA2698A-B6F7-4FD6-B9D8-CD0D0150B4A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecture.Application", "SampleCleanArchitecture.Application\SampleCleanArchitecture.Application.csproj", "{7BA2698A-B6F7-4FD6-B9D8-CD0D0150B4A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCleanArchitecture.Infrastructure.PaymentService", "SampleCleanArchitecture.Infrastructure.PaymentService\SampleCleanArchitecture.Infrastructure.PaymentService.csproj", "{20F27FE6-B303-4397-85B3-81493DC2DAD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecture.Infrastructure.PaymentService", "SampleCleanArchitecture.Infrastructure.PaymentService\SampleCleanArchitecture.Infrastructure.PaymentService.csproj", "{20F27FE6-B303-4397-85B3-81493DC2DAD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCleanArchitecture.Infrastructure.NotificationService", "SampleCleanArchitecture.Infrastructure.NotificationService\SampleCleanArchitecture.Infrastructure.NotificationService.csproj", "{57BDEB15-6F03-4070-AE61-D06851C88450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecture.Infrastructure.NotificationService", "SampleCleanArchitecture.Infrastructure.NotificationService\SampleCleanArchitecture.Infrastructure.NotificationService.csproj", "{57BDEB15-6F03-4070-AE61-D06851C88450}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleCleanArchitecture.Test.Application", "SampleCleanArchitecture.Test\SampleCleanArchitecture.Test.Application.csproj", "{3C24E1B9-DED2-4B79-8AF8-A6314DE7F323}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{57BDEB15-6F03-4070-AE61-D06851C88450}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57BDEB15-6F03-4070-AE61-D06851C88450}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57BDEB15-6F03-4070-AE61-D06851C88450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C24E1B9-DED2-4B79-8AF8-A6314DE7F323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C24E1B9-DED2-4B79-8AF8-A6314DE7F323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C24E1B9-DED2-4B79-8AF8-A6314DE7F323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C24E1B9-DED2-4B79-8AF8-A6314DE7F323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{7BA2698A-B6F7-4FD6-B9D8-CD0D0150B4A4} = {CB2918DD-056E-4BE9-AD90-32D8695D2CF0}
 		{20F27FE6-B303-4397-85B3-81493DC2DAD9} = {E1A2E3B7-01F8-489A-8C4A-DB442C322706}
 		{57BDEB15-6F03-4070-AE61-D06851C88450} = {E1A2E3B7-01F8-489A-8C4A-DB442C322706}
+		{3C24E1B9-DED2-4B79-8AF8-A6314DE7F323} = {D72AB9CA-AA1D-4559-9E31-7B3D154B6537}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D405A357-C488-44BB-AA80-9D7A99A32E86}

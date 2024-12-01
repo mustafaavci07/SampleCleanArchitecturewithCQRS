@@ -12,13 +12,13 @@ namespace SampleCleanArchitecture.Application.PassengerJourneys.Commands.DeleteP
         private SampleContext _sampleContext { get; set; }= sampleContext;
         public async Task<Ulid> Handle(DeletePassengerJourneyCommand request, CancellationToken cancellationToken)
         {
-            if(_sampleContext.PassengerJourneys.Find(request.id) is PassengerJourney passengerJourney)
-            {
-                passengerJourney.IsDeleted= true;
-                await _sampleContext.SaveChangesAsync();
-                return passengerJourney.Id;
-            }
-            return default(Ulid);
+            PassengerJourney passengerJourney = _sampleContext.PassengerJourneys.Find(request.id);
+            Guard.Against.NotFound(request.id, passengerJourney);
+           
+            passengerJourney.IsDeleted= true;
+            await _sampleContext.SaveChangesAsync();
+            return passengerJourney.Id;
+           
         }
     }
 }

@@ -16,19 +16,18 @@ namespace SampleCleanArchitecture.Application.Passengers.Commands.UpdatePassenge
     {
     }
 
-    public class UpdatePassengerCommandHandler(SampleContext sampleContext) : IRequestHandler<UpdatePassengerCommand, Ulid>
+    public class UpdatePassengerCommandHandler(SampleContext sampleContext,IMapper mapper) : IRequestHandler<UpdatePassengerCommand, Ulid>
     {
         private SampleContext _context { get; set; } = sampleContext; 
         public async Task<Ulid> Handle(UpdatePassengerCommand request, CancellationToken cancellationToken)
         {
+            Passenger passenger = _context.Passengers.Find(request.Id);
+            Guard.Against.NotFound(request.Id, passenger);
 
-            if (_context.Passengers.Find(request.Id) is Passenger passenger)
-            {
-                passenger = TinyMapper.Map<Passenger>(request);
-                await _context.SaveChangesAsync();
-                return passenger.Id;
-            }
-            return default(Ulid);
+            passenger = mapper.Map<Passenger>(request);
+            await _context.SaveChangesAsync();
+            return passenger.Id;
+           
         }
     }
 }

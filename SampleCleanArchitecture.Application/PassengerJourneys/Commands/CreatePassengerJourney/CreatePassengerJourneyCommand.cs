@@ -8,16 +8,14 @@ namespace SampleCleanArchitecture.Application.PassengerJourneys.Commands.CreateP
             ) : IRequest<Ulid>
     { }
 
-    public class CreatePassengerJourneyCommandHandler : IRequestHandler<CreatePassengerJourneyCommand, Ulid>
+    public class CreatePassengerJourneyCommandHandler(SampleContext sampleContext,IMapper mapper) : IRequestHandler<CreatePassengerJourneyCommand, Ulid>
     {
         private SampleContext _sampleContext { get; init; }
-        public CreatePassengerJourneyCommandHandler(SampleContext context)
-        {
-            _sampleContext = context;
-        }
+      
         public async Task<Ulid> Handle(CreatePassengerJourneyCommand request, CancellationToken cancellationToken)
         {
-            PassengerJourney entity = TinyMapper.Map<PassengerJourney>(request);
+            PassengerJourney entity = mapper.Map<PassengerJourney>(request);
+            
 
             _sampleContext.PassengerJourneys.Add(entity);
 

@@ -1,8 +1,8 @@
+
 using SampleCleanArchitecture.Application;
-using SampleCleanArchitecture.Infrastructure.Persistence;
 using SampleCleanArchitecture.Presentation.WebApi;
 
-using System;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +11,12 @@ string rootPath = Directory.GetCurrentDirectory();
 
 IConfiguration config = builder.Configuration.AddJsonFile(Path.Combine(rootPath, $"appsettings.{environmentLevel}.json")).Build();
 
-// Add services to the container.
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(config)
+    .CreateLogger();
+
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,7 +25,6 @@ builder.Services.RegisterApplicationMethods(config);
 
 var app = builder.Build();
 app.RegisterAPIs();
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

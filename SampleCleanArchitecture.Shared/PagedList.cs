@@ -1,4 +1,4 @@
-﻿using 
+﻿
 
 namespace SampleCleanArchitecture.Shared
 {

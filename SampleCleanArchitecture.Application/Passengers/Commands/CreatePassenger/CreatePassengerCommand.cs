@@ -14,12 +14,12 @@ namespace SampleCleanArchitecture.Application.Passengers.Commands.CreatePassenge
         string Address) : IRequest<Ulid>
         {}
 
-    public class CreatePassengerCommandHandler(SampleContext sampleContext) : IRequestHandler<CreatePassengerCommand, Ulid>
+    public class CreatePassengerCommandHandler(SampleContext sampleContext,IMapper mapper) : IRequestHandler<CreatePassengerCommand, Ulid>
     {
         private  SampleContext _sampleContext { get; set; } = sampleContext;
         public async Task<Ulid> Handle(CreatePassengerCommand request, CancellationToken cancellationToken)
         {
-            Passenger entity = TinyMapper.Map<Passenger>(request);
+            Passenger entity = mapper.Map<Passenger>(request);
             _sampleContext.Passengers.Add(entity);
             await _sampleContext.SaveChangesAsync();
             return entity.Id;
