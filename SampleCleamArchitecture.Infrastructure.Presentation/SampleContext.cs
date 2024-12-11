@@ -12,6 +12,7 @@ using SampleCleanArchitecture.Core.Domain.Payments;
 using SmartEnum.EFCore;
 
 using System.Reflection;
+using SampleCleanArchitecutre.Core.Domain.Rules;
 
 namespace SampleCleanArchitecture.Infrastructure.Persistence
 {
@@ -22,6 +23,7 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
         public DbSet<Journey> Journeys { get; set; }
         public DbSet<Payment> Payment { get; set; }
 
+        public DbSet<Rules> Rules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +33,7 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
             modelBuilder.Entity<Passenger>().ToTable("Passenger");
             modelBuilder.Entity<Journey>().ToTable("Journey");
             modelBuilder.Entity<Payment>().ToTable("Payment");
+            modelBuilder.Entity<Rules>().ToTable("Rules");
             modelBuilder.Entity<PassengerJourney>().ToTable("PassengerJourney");
             modelBuilder.ApplyConfiguration<PassengerJourney>(new PassengerJourneyConfigure());
             base.OnModelCreating(modelBuilder);

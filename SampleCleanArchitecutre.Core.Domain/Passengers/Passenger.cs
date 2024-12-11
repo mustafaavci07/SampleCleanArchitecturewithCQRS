@@ -15,6 +15,8 @@ namespace SampleCleanArchitecture.Core.Domain.Passengers
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
 
+        public PassengerSituation Situation { get; set; }
+
         public List<PassengerJourney> Journeys { get; set; }
         public List<Payment> Payments { get; set; }
     }

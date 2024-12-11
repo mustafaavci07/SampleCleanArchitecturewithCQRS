@@ -1,7 +1,11 @@
 ﻿
 using SampleCleanArchitecture.Application.Common.Behaviours;
+using RulesEngine;
 
 using System.Reflection;
+using RulesEngine.Interfaces;
+using SampleCleanArchitecture.Application.Services;
+using SampleCleanArchitecture.Infrastructure.PaymentService;
 
 namespace SampleCleanArchitecture.Application
 {
@@ -9,8 +13,10 @@ namespace SampleCleanArchitecture.Application
     {
         public static void RegisterApplicationMethods(this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddTransient<IRuleService,RuleService>();
+            services.AddTransient<DiscountService>();
             services.RegisterPersistenceService(configuration);
+            services.RegisterPaymentServices(configuration);
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(cfg =>
             {

@@ -34,5 +34,18 @@ namespace SampleCleanArchitecture.Shared
         public static readonly PaymentState Rejected = new PaymentState("Rejected", 3);
         public static readonly PaymentState Canceled = new PaymentState("Canceled", 3);
     }
-    
+
+    public class PassengerSituation : SmartEnum<PassengerSituation>
+    {
+        private PassengerSituation(string name, int value) : base(name, value)
+        {
+        }
+
+        public static readonly PassengerSituation Student = new PassengerSituation("Student", 1);
+        public static readonly PassengerSituation Teacher = new PassengerSituation("Teacher", 2);
+        public static readonly PassengerSituation Disabled = new PassengerSituation("Disabled", 3);
+        public static readonly PassengerSituation Elder = new PassengerSituation("Elder", 4);
+
+    }
+
 }

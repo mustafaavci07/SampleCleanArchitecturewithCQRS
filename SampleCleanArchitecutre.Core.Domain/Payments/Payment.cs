@@ -12,6 +12,7 @@ namespace SampleCleanArchitecture.Core.Domain.Payments
         public DateTime CardValidTill { get; set; }
         public DateTime PaymentDate { get; set; }
 
+        public string BankProcessId { get; set; }
         public PaymentState PaymentState { get; set; } = PaymentState.Waiting;
     }
 }
