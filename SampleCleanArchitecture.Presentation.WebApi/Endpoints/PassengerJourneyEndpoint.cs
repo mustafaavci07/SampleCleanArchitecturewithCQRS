@@ -9,17 +9,22 @@ using SampleCleanArchitecture.Shared.DTO.Passengers;
 
 namespace SampleCleanArchitecture.Presentation.WebApi.Endpoints
 {
-    public class PassengerJourneyEndpoint(ISender sender) : EndpointGroupBase
+    public class PassengerJourneyEndpoint: EndpointGroupBase
     {
-        private ISender _sender { get; set; } = sender;
+        private ISender _sender { get; set; }
+        public PassengerJourneyEndpoint(ISender sender)
+        {
+            _sender = _sender;
+        }
+        
       
         public override void Map(WebApplication app)
         {
             app.MapGroup(this)
-                .MapGet(GetPassengersOfJourney, "{journeyId}")
-                .MapGet(GetJourneysOfPassenger, "{passengerId}")
-                .MapPut(async ([FromBody] UpdatePassengerJourneyCommand updateRecord) => { return await UpdatePassengerJourney(updateRecord); })
-                .MapPost(async ([FromBody] CreatePassengerJourneyCommand command) => { return await CreatePassengerJourney(command); })
+                .MapGet(GetPassengersOfJourney, pattern: "/GetPassengersOfJourney /{journeyId}",actionName: "GetPassengersOfJourney")
+                .MapGet(GetJourneysOfPassenger, pattern: "/GetJourneysOfPassenger/{passengerId}", actionName: "GetJourneysOfPassenger")
+                .MapPut(async ([FromBody] UpdatePassengerJourneyCommand updateRecord) => { return await UpdatePassengerJourney(updateRecord); }, pattern: "/UpdatePassengerJourney",actionName: "UpdatePassengerJourney")
+                .MapPost(async ([FromBody] CreatePassengerJourneyCommand command) => { return await CreatePassengerJourney(command); }, pattern: "/CreatePassengerJourney",actionName: "CreatePassengerJourney")
                 .MapDelete(DeletePassengerJourney, "{recordId}");
         }
 

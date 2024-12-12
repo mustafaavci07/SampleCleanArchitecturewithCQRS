@@ -1,6 +1,8 @@
 ﻿
 
 
+using RulesEngine.Actions;
+
 using SampleCleanArchitecture.Application.Passengers.Commands.CreatePassenger;
 using SampleCleanArchitecture.Application.Passengers.Commands.DeletePassenger;
 using SampleCleanArchitecture.Application.Passengers.Commands.UpdatePassenger;
@@ -9,18 +11,22 @@ using SampleCleanArchitecture.Shared.DTO.Passengers;
 
 namespace SampleCleanArchitecture.Presentation.WebApi.Endpoints
 {
-    public class PassengerEndpoint(ISender sender) : EndpointGroupBase
+    public class PassengerEndpoint : EndpointGroupBase
     {
-        private ISender _sender { get; set; } = sender;
+        private ISender _sender { get; set; }
+        public PassengerEndpoint(ISender sender)
+        {
+                _sender= sender;
+        }
         public override void Map(WebApplication app)
         {
             app.MapGroup(this)
-            .MapGet(GetAllPassengers)
-            .MapGet(async (int pageSize, int pageOffset) => { return await GetPagedPassengers(pageSize, pageOffset); }, "GetPagedPassengers")
-            .MapGet(async (Ulid passengerID) => { return await FindPassenger(passengerID); }, "FindPassenger")
-            .MapDelete(async (Ulid passengerID) => { return await DeletePassenger(passengerID); }, "DeletePassenger")
-            .MapPut(async ([FromBody] UpdatePassengerCommand passenger) => { return await UpdatePassenger(passenger); }, "UpdatePassenger")
-            .MapPost(async ([FromBody] CreatePassengerCommand passenger) => { return await CreatePassenger(passenger); }, "CreatePassenger");
+            .MapGet(GetAllPassengers, pattern: "/GetAllPassengers")
+            .MapGet(async (int pageSize, int pageOffset) => { return await GetPagedPassengers(pageSize, pageOffset); }, pattern: "/GetPagedPassengers",actionName: "GetPagedPassengers")
+            .MapGet(async (Ulid passengerID) => { return await FindPassenger(passengerID); }, pattern: "/FindPassenger", actionName: "FindPassenger")
+            .MapDelete(async (Ulid passengerID) => { return await DeletePassenger(passengerID); }, pattern: "/DeletePassenger", actionName: "DeletePassenger")
+            .MapPut(async ([FromBody] UpdatePassengerCommand passenger) => { return await UpdatePassenger(passenger); }, pattern: "/UpdatePassenger", actionName: "UpdatePassenger")
+            .MapPost(async ([FromBody] CreatePassengerCommand passenger) => { return await CreatePassenger(passenger); }, pattern: "/CreatePassenger", actionName: "CreatePassenger");
         }
 
         public async Task<List<PassengerDTO>> GetAllPassengers()

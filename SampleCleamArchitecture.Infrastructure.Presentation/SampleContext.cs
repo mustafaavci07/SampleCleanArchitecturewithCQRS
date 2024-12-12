@@ -13,6 +13,8 @@ using SmartEnum.EFCore;
 
 using System.Reflection;
 using SampleCleanArchitecutre.Core.Domain.Rules;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System;
 
 namespace SampleCleanArchitecture.Infrastructure.Persistence
 {
@@ -127,5 +129,41 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
         }
     }
 
+    public class BeforeSaveChangesInterceptor : SaveChangesInterceptor
+    {
+        public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
+        {
+            UpdateEntities(eventData.Context);
+
+            return base.SavingChanges(eventData, result);
+        }
+
+        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        {
+            UpdateEntities(eventData.Context);
+
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
+        }
+
+        public void UpdateEntities(DbContext? context)
+        {
+            if (context == null) return;
+
+            foreach (var entry in context.ChangeTracker.Entries<AuditableBaseEntity>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedBy = "admin";
+                    entry.Entity.CreatedTime = DateTime.UtcNow;
+                    entry.Entity.Id = Ulid.NewUlid();
+                }
+                else if (entry.State== EntityState.Modified)
+                {
+                    entry.Entity.ModifiedBy = "admin";
+                    entry.Entity.UpdateTime = DateTime.UtcNow;
+                }
+            }
+        }
+    }
 
 }

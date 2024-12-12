@@ -1,4 +1,7 @@
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.OpenApi.Models;
+
 using SampleCleanArchitecture.Application;
 using SampleCleanArchitecture.Presentation.WebApi;
 
@@ -16,25 +19,44 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 
-builder.Services.AddControllers();
+//builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-builder.Services.RegisterApplicationMethods(config);
+builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = builder.Environment.ApplicationName, Version = "v1" });
+});
 
 
+builder.Services.RegisterApplicationMethods(config,Log.Logger);
+builder.Services.AddHttpClient();
+builder.Services.AddAuthorization();
 var app = builder.Build();
-app.RegisterAPIs();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    //app.UseSwaggerUI(options =>
+    //{
+    //    options.SwaggerEndpoint("/swagger/v1/swagger.json", $"{builder.Environment.ApplicationName} v1");
+    //});
+
     app.UseSwaggerUI();
 }
+
+app.MapGet("/api/test", () => "Test endpoint")
+   .WithName("TestEndpoint")
+   .WithTags("Test");
+app.RegisterAPIs(app.Services.CreateScope().ServiceProvider.GetRequiredService<ISender>());
+/*app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");*/
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+
+//app.UseHealthChecks("/health");
+//app.MapControllers();
 
 app.Run();

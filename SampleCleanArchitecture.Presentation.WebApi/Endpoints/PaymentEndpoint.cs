@@ -1,16 +1,22 @@
 ﻿
+using RulesEngine.Actions;
+
 namespace SampleCleanArchitecture.Presentation.WebApi.Endpoints
 {
-    public class PaymentEndpoint(ISender sender) : EndpointGroupBase
+    public class PaymentEndpoint : EndpointGroupBase
     {
-        private ISender _sender { get; set; } = sender;
+        private ISender _sender { get; set; }
+        public PaymentEndpoint(ISender sender)
+        {
+            _sender = sender;
+        }
         public override void Map(WebApplication app)
         {
             app.MapGroup(this)
-                .MapGet(GetPaymentsForJourney,"{journeyId}")
-                .MapPut(async (PaymentState paymentState,Ulid paymentId) => { return await UpdatePayments(paymentState, paymentId); } )
-                .MapPost(async ([FromBody] CreatePaymentCommand command) => { return await CreatePayments(command); })
-                .MapGet(GetPaymentsForPassenger,"{passengerId}");
+                .MapGet(GetPaymentsForJourney, "/GetPaymentsForJourney/{journeyId}")
+                .MapPut(async (PaymentState paymentState,Ulid paymentId) => { return await UpdatePayments(paymentState, paymentId); } , pattern: "/UpdatePayments",actionName: "UpdatePayments")
+                .MapPost(async ([FromBody] CreatePaymentCommand command) => { return await CreatePayments(command); }, pattern: "/CreatePayments", actionName: "CreatePayments")
+                .MapGet(GetPaymentsForPassenger, pattern: "/GetPaymentsForPassenger/{passengerId}", actionName: "GetPaymentsForPassenger");
         }
 
         public async Task<List<PaymentDTO>> GetPaymentsForJourney(Ulid journeyId)

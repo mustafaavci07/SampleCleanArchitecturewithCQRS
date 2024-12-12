@@ -1,4 +1,6 @@
 ﻿
+using RulesEngine.Actions;
+
 using SampleCleanArchitecture.Application.Journeys.Commands.CancelJourney;
 using SampleCleanArchitecture.Application.Journeys.Commands.CreateJourney;
 using SampleCleanArchitecture.Application.Journeys.Commands.UpdateJourney;
@@ -8,18 +10,23 @@ using SampleCleanArchitecture.Shared.DTO.Journeys;
 namespace SampleCleanArchitecture.Presentation.WebApi.Endpoints
 {
 
-    public class JourneyEndpoint(ISender sender) : EndpointGroupBase
+    public class JourneyEndpoint : EndpointGroupBase
     {
-        private ISender _sender { get; set; } = sender;
+        private ISender _sender { get; set; } 
+        public JourneyEndpoint(ISender sender)
+        {
+            _sender = sender;
+        }
+        
         public override void Map(WebApplication app)
         {
             app.MapGroup(this)
-                .MapGet(GetAllJourneys)
-                .MapGet(async (int pageSize, int pageOffset) => { return await GetPagedJourneys(pageSize, pageOffset); }, "GetPagedJourneys")
-                .MapGet(async (Ulid journeyId) => { return await FindJourney(journeyId); }, "FindJourney")
-                .MapPut(async (Ulid journeyId) => { return await CancelJourney(journeyId); }, "CancelJourney")
-                .MapPut(async([FromBody] UpdateJourneyCommand journey) => { return await UpdateJourney(journey); },"UpdateJourney")
-                .MapPost(async ([FromBody] CreateJourneyCommand journey) => { return await CreateJourney(journey); }, "CreateJourney")
+            .MapGet(GetAllJourneys,pattern: "/GetAllJourneys")
+                .MapGet(async (int pageSize, int pageOffset) => { return await GetPagedJourneys(pageSize, pageOffset); }, pattern: "/GetPagedJourneys",actionName: "GetPagedJourneys")
+                .MapGet(async (Ulid journeyId) => { return await FindJourney(journeyId); }, pattern: "/FindJourney",actionName: "FindJourney")
+                .MapPut(async (Ulid journeyId) => { return await CancelJourney(journeyId); }, pattern: "/CancelJourney",actionName: "CancelJourney")
+                .MapPut(async ([FromBody] UpdateJourneyCommand journey) => { return await UpdateJourney(journey); }, pattern: "/UpdateJourney",actionName: "UpdateJourney")
+                .MapPost(async ([FromBody] CreateJourneyCommand journey) => { return await CreateJourney(journey); }, pattern: "/CreateJourney", actionName: "CreateJourney");
 
 
         }

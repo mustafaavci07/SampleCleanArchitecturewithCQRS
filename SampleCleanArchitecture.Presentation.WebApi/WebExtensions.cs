@@ -5,66 +5,79 @@ namespace SampleCleanArchitecture.Presentation.WebApi
 {
     public static class WebExtensions
     {
-        public static void RegisterAPIs(this WebApplication webApplication)
+        public static void RegisterAPIs(this WebApplication webApplication,ISender sender)
         {
             var endpoints = Assembly.GetExecutingAssembly()?.GetExportedTypes().Where(p => p.IsSubclassOf(typeof(EndpointGroupBase)));
+            RegisterEndpoint(webApplication,sender);
         }
 
-        public static IEndpointRouteBuilder MapGet(this IEndpointRouteBuilder endpointRouteBuilder, Delegate handler, [StringSyntax("Route")] string pattern = "",
-       Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null)
+
+        
+        public static WebApplication MapGet(this WebApplication webApp, Delegate handler, [StringSyntax("Route")] string pattern = "",
+        Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null, string actionName = null)
         {
             endpointFilter ??= DefaultEndpointFilter;
-            endpointRouteBuilder.MapGet(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
-            .WithName(handler.Method.Name);
+            webApp.MapGet(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
+            .WithName(actionName ?? handler.Method.Name);
 
-            return endpointRouteBuilder;
+            return webApp;
         }
 
-        public static IEndpointRouteBuilder MapPost(this IEndpointRouteBuilder endpointRouteBuilder, Delegate handler, [StringSyntax("Route")] string pattern = "",
-        Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null)
+        public static WebApplication MapPost(this WebApplication webApp, Delegate handler, [StringSyntax("Route")] string pattern = "",
+        Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null, string actionName = null)
         {
             endpointFilter ??= DefaultEndpointFilter;
-            endpointRouteBuilder.MapPost(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
-            .WithName(handler.Method.Name);
+            webApp.MapPost(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
+            .WithName(actionName ?? handler.Method.Name);
 
-            return endpointRouteBuilder;
+            return webApp;
         }
 
-        public static IEndpointRouteBuilder MapPut(this IEndpointRouteBuilder endpointRouteBuilder, Delegate handler, [StringSyntax("Route")] string pattern = "",
-        Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null)
+        public static WebApplication MapPut(this WebApplication webApp, Delegate handler, [StringSyntax("Route")] string pattern = "",
+        Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null, string actionName = null)
         {
             endpointFilter ??= DefaultEndpointFilter;
-            endpointRouteBuilder.MapPut(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
-            .WithName(handler.Method.Name);
+            webApp.MapPut(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
+            .WithName(actionName ?? handler.Method.Name);
 
-            return endpointRouteBuilder;
+            return webApp;
         }
 
-        public static IEndpointRouteBuilder MapDelete(this IEndpointRouteBuilder endpointRouteBuilder, Delegate handler, [StringSyntax("Route")] string pattern = "",
-        Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null)
+        public static WebApplication MapDelete(this WebApplication webApp, Delegate handler, [StringSyntax("Route")] string pattern = "",
+        Func<EndpointFilterInvocationContext, EndpointFilterDelegate, ValueTask<object?>>? endpointFilter = null, string actionName = null)
         {
             endpointFilter ??= DefaultEndpointFilter;
-            endpointRouteBuilder.MapDelete(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
-            .WithName(handler.Method.Name);
+            webApp.MapDelete(pattern, handler).AddEndpointFilter(async (EndpointFilterInvocationContext context, EndpointFilterDelegate next) => await endpointFilter(context, next))
+            .WithName(actionName ?? handler.Method.Name);
 
-            return endpointRouteBuilder;
+            return webApp;
         }
 
-        public static RouteGroupBuilder MapGroup(this WebApplication app, EndpointGroupBase group)
+        public static WebApplication MapGroup(this WebApplication app, EndpointGroupBase group)
         {
             var groupName = group.GetType().Name;
 
-            return app
-                .MapGroup($"/api/{groupName}")
+             app.MapGroup($"/api/{groupName}")
                 .WithGroupName(groupName)
                 .WithTags(groupName);
+            return app;
         }
 
-        private static void RegisterEndpoint(WebApplication webApplication,Type typeToRegister)
+        private static void RegisterEndpoint(WebApplication webApplication,ISender sender)
         {
-            if (Activator.CreateInstance(typeToRegister) is EndpointGroupBase instance)
+            var endpointGroupType = typeof(EndpointGroupBase);
+
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var endpointGroupTypes = assembly.GetExportedTypes()
+                .Where(t => t.IsSubclassOf(endpointGroupType));
+
+            foreach (var type in endpointGroupTypes)
             {
-                instance.Map(webApplication);
+                if (Activator.CreateInstance(type, sender) is EndpointGroupBase instance)
+                {
+                    instance.Map(webApplication);
+                }
             }
         }
         private static async ValueTask<object?> DefaultEndpointFilter(EndpointFilterInvocationContext context, EndpointFilterDelegate next)

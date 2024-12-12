@@ -1,12 +1,12 @@
-﻿using  Logger = Serilog.ILogger;
+﻿using  ILogger = Serilog.ILogger;
 
 namespace SampleCleanArchitecture.Application.Common.Behaviours
 {
     public class ExceptionHandlingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
     {
-        private Logger _logger { get; set; }
+        private ILogger _logger { get; set; }
 
-        public ExceptionHandlingBehaviour(Logger logger)
+        public ExceptionHandlingBehaviour(ILogger logger)
         {
                 _logger = logger;
         }
@@ -20,7 +20,7 @@ namespace SampleCleanArchitecture.Application.Common.Behaviours
             catch (Exception ex)
             {
 
-                _logger.LogError(ex, $" Unhandled Exception for Request {typeof(TRequest).Name} : {request}");
+                _logger.Error(ex, $" Unhandled Exception for Request {typeof(TRequest).Name} : {request}");
 
                 throw;
             }

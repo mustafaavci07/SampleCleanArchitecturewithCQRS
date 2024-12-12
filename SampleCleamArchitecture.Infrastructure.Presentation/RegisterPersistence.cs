@@ -10,7 +10,7 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
             serviceCollection.AddEntityFrameworkNpgsql().AddDbContext<SampleContext>((sp,options ) => {
                 options.UseNpgsql(config.GetConnectionString("PostgresConnection"));
                 
-            });
+            },ServiceLifetime.Scoped);
 
             return serviceCollection;
         }

@@ -6,7 +6,7 @@ namespace SampleCleanArchitecture.Application.Journeys.Commands.CreateJourney
             DateTime ArrivalTimeUTC,
             string DepartureFrom,
             string ArrivalTo,
-            decimal Price,
+            double Price,
             int PassengerCapacity
             ) : IRequest<Ulid>
     { }
