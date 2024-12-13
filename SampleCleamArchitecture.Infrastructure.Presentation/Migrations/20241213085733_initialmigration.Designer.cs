@@ -12,8 +12,8 @@ using SampleCleanArchitecture.Infrastructure.Persistence;
 namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(SampleContext))]
-    [Migration("20241121082809_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241213085733_initialmigration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,9 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Journeys.Journey", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<string>("Id")
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<DateTime>("ArrivalTimeUTC")
                         .HasColumnType("timestamp with time zone");
@@ -37,6 +37,9 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<string>("ArrivalTo")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("Canceled")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -52,15 +55,17 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("DepartureTimeUTC")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("PassengerCapacity")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("timestamp with time zone");
@@ -72,9 +77,9 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Passengers.Passenger", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<string>("Id")
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -93,12 +98,14 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<int>("Gender")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("MailAddress")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -112,6 +119,9 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Situation")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Surname")
                         .IsRequired()
@@ -127,9 +137,9 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Passengers.PassengerJourney", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<string>("Id")
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -141,19 +151,21 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<int>("IsCanceled")
                         .HasColumnType("integer");
 
-                    b.Property<byte[]>("JourneyId")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("JourneyId")
                         .IsRequired()
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("PassengerId")
+                    b.Property<string>("PassengerId")
                         .IsRequired()
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("timestamp with time zone");
@@ -169,11 +181,15 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Payments.Payment", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<string>("Id")
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<string>("Bank")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("BankProcessId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -191,22 +207,27 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<byte[]>("JourneyId")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("JourneyId")
                         .IsRequired()
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<string>("ModifiedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<byte[]>("PassengerId")
+                    b.Property<string>("PassengerId")
                         .IsRequired()
                         .HasMaxLength(26)
-                        .HasColumnType("bytea");
+                        .HasColumnType("character varying(26)");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PaymentState")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdateTime")
                         .HasColumnType("timestamp with time zone");
@@ -218,6 +239,53 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.HasIndex("PassengerId");
 
                     b.ToTable("Payment", (string)null);
+                });
+
+            modelBuilder.Entity("SampleCleanArchitecutre.Core.Domain.Rules.Rules", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(26)
+                        .HasColumnType("character varying(26)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ErrorMessage")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RuleExpression")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RuleName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SuccessEvent")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("WorkflowName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rules", (string)null);
                 });
 
             modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Passengers.PassengerJourney", b =>
@@ -242,7 +310,7 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Payments.Payment", b =>
                 {
                     b.HasOne("SampleCleanArchitecture.Core.Domain.Journeys.Journey", "Journey")
-                        .WithMany("Payments")
+                        .WithMany()
                         .HasForeignKey("JourneyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -256,11 +324,6 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Navigation("Journey");
 
                     b.Navigation("Passenger");
-                });
-
-            modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Journeys.Journey", b =>
-                {
-                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("SampleCleanArchitecture.Core.Domain.Passengers.Passenger", b =>

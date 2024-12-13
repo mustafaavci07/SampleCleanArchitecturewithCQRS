@@ -46,7 +46,7 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
         {
             configurationBuilder.Properties<Ulid>()
                 .HaveConversion<UlidToStringConverter>()
-                .HaveConversion<UlidToBytesConverter>()
+                //.HaveConversion<UlidToBytesConverter>()
                 .HaveMaxLength(26);
             configurationBuilder.ConfigureSmartEnum();
             base.ConfigureConventions(configurationBuilder);
@@ -74,8 +74,8 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
             builder.HasOne(p => p.Passenger)
                 .WithMany(p => p.Journeys);
 
-            builder.Property(p=>p.PassengerId).HasConversion<UlidToStringConverter>().HasConversion<UlidToBytesConverter>();
-            builder.Property(p=>p.JourneyId).HasConversion<UlidToStringConverter>().HasConversion<UlidToBytesConverter>();
+            builder.Property(p=>p.PassengerId).HasConversion<UlidToStringConverter>().HasConversion<UlidToStringConverter>();
+            builder.Property(p=>p.JourneyId).HasConversion<UlidToStringConverter>().HasConversion<UlidToStringConverter>();
         }
     }
 
@@ -90,7 +90,7 @@ namespace SampleCleanArchitecture.Infrastructure.Persistence
             var optionsBuilder = new DbContextOptionsBuilder<SampleContext>();
             
             optionsBuilder.UseNpgsql(configuration.GetConnectionString("PostgresConnection"));
-
+            optionsBuilder.ConfigureWarnings(wrn => wrn.Ignore(RelationalEventId.PendingModelChangesWarning));
             return new SampleContext(optionsBuilder.Options);
         }
     }
